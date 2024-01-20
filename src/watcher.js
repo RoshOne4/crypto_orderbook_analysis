@@ -30,7 +30,7 @@ const calculImbalance = async () => {
 	// Calculate the percentage difference
 	const imbalancePercentage = Math.abs((totalBidQuantity - totalAskQuantity) / ((totalBidQuantity + totalAskQuantity) / 2)) * 100;
 	
-	if (imbalancePercentage > 10)
+	if (imbalancePercentage > 50)
 		sendTelegram(`SOLUSDT imbalance ${imbalancePercentage.toFixed(2)}%\nBid: ${formatter.format(totalBidQuantity.toFixed(0))}\nAsk: ${formatter.format(totalAskQuantity.toFixed(0))}`);
 }
 
