@@ -23,6 +23,7 @@ const fetchData = (symbol, callback) => {
 	})
 	.catch(error => callback(error))
 }
+
 cron.schedule('*/5 * * * *', () => {
   async.each(symbols, fetchData, function(err) {
 		if (err)
