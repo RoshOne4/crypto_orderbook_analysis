@@ -7,7 +7,8 @@ const formatter = Intl.NumberFormat('en', { notation: 'compact' });
 const calculImbalance = async () => {
 	const res = await pool.query("SELECT * FROM order_book WHERE symbol = 'SOLUSDT' ORDER BY time DESC LIMIT 1;");
 
-	console.log(res.rows[0].time)
+	const date = res.rows[0].time
+	console.log(date, moment(date).local().format())
 	const bids = res.rows[0].bids.slice(0, 1000);
 	const asks = res.rows[0].asks.slice(0, 1000);
 
