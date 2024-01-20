@@ -9,7 +9,7 @@ const binance = new Spot()
 const symbols = ['BTCUSDT', 'ETHUSDT', 'SOLUSDT', 'TIAUSDT', 'BLURUSDT'];
 
 const fetchData = (symbol, callback) => {
-	const date = moment();
+	const date = moment().utc();
 	binance.depth(symbol, { limit: 5000 })
 	.then(async (response) => {
 		const bids = JSON.stringify(response.data.bids);
@@ -17,7 +17,7 @@ const fetchData = (symbol, callback) => {
 
 		const res = await pool.query(
 			"INSERT INTO order_book (symbol, time, bids, asks) VALUES ($1, $2, $3, $4)",
-			[symbol, date.utc().format(), bids, asks]
+			[symbol, date.format(), bids, asks]
 		);
 		return callback(null);
 	})
