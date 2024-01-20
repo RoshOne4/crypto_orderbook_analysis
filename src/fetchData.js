@@ -16,7 +16,7 @@ const fetchData = (symbol, callback) => {
 		const asks = JSON.stringify(response.data.asks);
 
 		const res = await pool.query(
-			"INSERT INTO order_book (symbol, data, bids, asks) VALUES ($1, $2, $3, $4)",
+			"INSERT INTO order_book (symbol, date, bids, asks) VALUES ($1, $2, $3, $4)",
 			[symbol, date, bids, asks]
 		);
 		return callback(null);
