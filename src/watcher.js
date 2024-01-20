@@ -19,7 +19,7 @@ const sendTelegram = (msg) => {
 }
 
 const calculImbalance = async () => {
-	const res = await pool.query("SELECT * FROM order_book WHERE symbol = 'SOLUSDT' ORDER BY time DESC LIMIT 1;");
+	const res = await pool.query("SELECT * FROM order_book WHERE symbol = 'SOLUSDT' ORDER BY date DESC LIMIT 1;");
 
 	const bids = res.rows[0].bids.slice(0, 1000);
 	const asks = res.rows[0].asks.slice(0, 1000);
