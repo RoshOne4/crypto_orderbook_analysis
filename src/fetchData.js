@@ -6,7 +6,7 @@ const { pool } = require("./db");
 
 const binance = new Spot()
 
-const symbols = ['BTCUSDT', 'ETHUSDT', 'SOLUSDT', 'TIAUSDT', 'BLURUSDT'];
+// const symbols = ['BTCUSDT', 'ETHUSDT', 'SOLUSDT', 'TIAUSDT', 'BLURUSDT'];
 
 const fetchData = (symbol, callback) => {
 	const date = moment().toISOString();
@@ -24,11 +24,28 @@ const fetchData = (symbol, callback) => {
 	.catch(error => callback(error))
 }
 
+const initFetching = () => {
+	async.waterfall([
+		async function(callback) {
+			const res = await pool.query("SELECT ticker from symbols");
+
+			return [res.rows.map(x => x.ticker)];
+		},
+		function(symbols, callback) {
+			async.each(symbols[0], fetchData, function(err) {
+				if (err)
+					callback(err)
+				else
+					callback(null, `Success at ${moment().toISOString()}`)
+			})
+		}],
+		function(err, res) {
+			if (err)
+				console.log(err)
+			else
+				console.log(res)
+		})
+}
 cron.schedule('*/5 * * * *', () => {
-  async.each(symbols, fetchData, function(err) {
-		if (err)
-			console.log(err)
-		else
-			console.log(`Success at ${moment().toISOString()}`)
-	})
+  initFetching();
 });
