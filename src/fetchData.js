@@ -17,7 +17,7 @@ const fetchData = (symbol, callback) => {
 
 		const res = await pool.query(
 			"INSERT INTO order_book (symbol, time, bids, asks) VALUES ($1, $2, $3, $4)",
-			[symbol, date.format(), bids, asks]
+			[symbol, date.utc().format(), bids, asks]
 		);
 		return callback(null);
 	})
