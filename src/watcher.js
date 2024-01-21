@@ -12,7 +12,7 @@ const chatId = '397929306';
 const formatter = Intl.NumberFormat('en', { notation: 'compact' });
 
 const sendTelegram = (msg) => {
-	bot.sendMessage(chatId, msg)
+	bot.sendMessage(chatId, msg, { parse_mode: 'Markdown' })
 	.catch(error => console.error('Error sending message:', error));
 }
 
@@ -36,9 +36,17 @@ const watch = async (symbol, callback) => {
 	// console.log('>', symbol)
 	// console.log(data)
 	
-	if ((data.imbalance > 0) && (data.imbalance >= parseFloat(symbol.bid_imbalance)) ||
-			(data.imbalance <= 0) && (Math.abs(data.imbalance) >= parseFloat(symbol.ask_imbalance))) {
-		sendTelegram(`${symbol.ticker}\nImbalance ${data.imbalance}%\nBid: ${data.bids}\nAsk: ${data.asks}\nDate: ${data.date}`);
+	if (data.imbalance > 0) {
+		if (data.imbalance >= parseFloat(symbol.bid_imbalance))
+			sendTelegram(`${symbol.ticker}\nImbalance *${data.imbalance}%* 🟢\nBid: ${data.bids}\nAsk: ${data.asks}\nDate: ${data.date}`);
+		else if (data.imbalance >= (parseFloat(symbol.bid_imbalance) - (parseFloat(symbol.bid_imbalance) * 0.3)))
+			sendTelegram(`${symbol.ticker}\nImbalance *${data.imbalance}%* 🔵\nBid: ${data.bids}\nAsk: ${data.asks}\nDate: ${data.date}`);
+	}
+	else if (data.imbalance <= 0) {
+		if (Math.abs(data.imbalance) >= parseFloat(symbol.ask_imbalance))
+			sendTelegram(`${symbol.ticker}\nImbalance *${data.imbalance}%* 🔴\nBid: ${data.bids}\nAsk: ${data.asks}\nDate: ${data.date}`);
+		else if (Math.abs(data.imbalance) >= (parseFloat(symbol.ask_imbalance) - (parseFloat(symbol.ask_imbalance) * 0.3)))
+			sendTelegram(`${symbol.ticker}\nImbalance *${data.imbalance}%* 🟠\nBid: ${data.bids}\nAsk: ${data.asks}\nDate: ${data.date}`);
 	}
 	return [];
 }
@@ -66,7 +74,6 @@ const initWatcher = () => {
 		})
 }
 
-// initWatcher();
 cron.schedule('*/5 * * * *', () => {
 	setTimeout(() => {
 		initWatcher();

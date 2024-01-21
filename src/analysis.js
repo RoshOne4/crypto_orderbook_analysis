@@ -38,10 +38,10 @@ const calculImbalance = async (ticker, per) => {
 	}
 }
 // calculImbalance('SOLUSDT', 5);
-cron.schedule('*/5 * * * *', () => {
-	setTimeout(() => {
+// cron.schedule('*/5 * * * *', () => {
+	// setTimeout(() => {
 		calculImbalance('TIAUSDT', 3);
 		calculImbalance('SOLUSDT', 5);
 		calculImbalance('BLURUSDT', 1.5);
-	}, 3000);
-});
+	// }, 3000);
+// });
