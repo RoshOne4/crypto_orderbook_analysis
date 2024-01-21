@@ -1,19 +1,11 @@
 const cron = require('node-cron');
 const moment = require('moment');
-const { pool } = require("./db");
 const { Parser } = require('@json2csv/plainjs');
 const fs = require('node:fs');
+const { pool } = require("./db");
+const { cutArrayPerPercentage } = require('./lib');
 
 const formatter = Intl.NumberFormat('en', { notation: 'compact' });
-
-const cutArrayPerPercentage = (ar, per, side) => {
-	const flatar = ar.map(x => x[0]);
-	const first = parseFloat(flatar[0]);
-	const threshold = (side === 'ask') ? first + (first * (per / 100)) : first - (first * (per / 100));
-	const thresholdIndex = (side === 'ask') ? flatar.findIndex(value => parseFloat(value) >= threshold) : flatar.findIndex(value => parseFloat(value) <= threshold);
-
-	return ar.slice(0, thresholdIndex)
-}
 
 const calculImbalance = async (ticker, per) => {
 	const res = await pool.query("SELECT * FROM order_book WHERE symbol = $1 ORDER BY date ASC;", [ticker]);
@@ -45,7 +37,7 @@ const calculImbalance = async (ticker, per) => {
 		console.error(err);
 	}
 }
-calculImbalance('TIAUSDT', 1);
+// calculImbalance('SOLUSDT', 5);
 cron.schedule('*/5 * * * *', () => {
 	setTimeout(() => {
 		calculImbalance('TIAUSDT', 3);

@@ -6,8 +6,6 @@ const { pool } = require("./db");
 
 const binance = new Spot()
 
-// const symbols = ['BTCUSDT', 'ETHUSDT', 'SOLUSDT', 'TIAUSDT', 'BLURUSDT'];
-
 const fetchData = (symbol, callback) => {
 	const date = moment().toISOString();
 	binance.depth(symbol, { limit: 5000 })
@@ -46,6 +44,7 @@ const initFetching = () => {
 				console.log(res)
 		})
 }
+
 cron.schedule('*/5 * * * *', () => {
   initFetching();
 });
