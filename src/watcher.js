@@ -31,7 +31,7 @@ const watch = async (symbol, callback) => {
 		date: moment(x.date).local().format('DD/MM/YYYY HH:mm'),
 		asks: formatter.format(totalAskQuantity),
 		bids: formatter.format(totalBidQuantity),
-		imbalance: parseFloat(((totalBidQuantity - totalAskQuantity) / ((totalBidQuantity + totalAskQuantity) / 2) * 100).toFixed(2))
+		imbalance : parseFloat(((totalBidQuantity - totalAskQuantity) / (totalBidQuantity + totalAskQuantity) * 100).toFixed(2))
 	}
 	// console.log('>', symbol)
 	// console.log(data)

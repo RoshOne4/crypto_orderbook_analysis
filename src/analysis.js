@@ -17,10 +17,10 @@ const calculImbalance = async (ticker, per) => {
 		const totalAskQuantity = asks.reduce((total, ask) => total + parseFloat(ask[1]), 0);
 
 	return {
-			date: moment(x.date).local().format(),
+			date: moment(x.date).local().format('DD/MM/YYYY HH:mm'),
 			asks: formatter.format(totalAskQuantity),
 			bids: formatter.format(totalBidQuantity),
-			imbalance: ((totalBidQuantity - totalAskQuantity) / ((totalBidQuantity + totalAskQuantity) / 2) * 100).toFixed(2) + '%'
+			imbalance2: ((totalBidQuantity - totalAskQuantity) / (totalBidQuantity + totalAskQuantity) * 100).toFixed(2) + '%',
 		}
 	})
 	// console.log(data)
@@ -37,11 +37,11 @@ const calculImbalance = async (ticker, per) => {
 		console.error(err);
 	}
 }
-// calculImbalance('SOLUSDT', 5);
+// calculImbalance('INJUSDT', 5);
 // cron.schedule('*/5 * * * *', () => {
 	// setTimeout(() => {
-		calculImbalance('TIAUSDT', 3);
+		// calculImbalance('TIAUSDT', 3);
 		calculImbalance('SOLUSDT', 5);
-		calculImbalance('BLURUSDT', 1.5);
+		// calculImbalance('BLURUSDT', 1.5);
 	// }, 3000);
-// });
+// }); 
