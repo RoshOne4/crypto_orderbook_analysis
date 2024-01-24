@@ -39,14 +39,14 @@ const watch = async (symbol, callback) => {
 	if (data.imbalance > 0) {
 		if (data.imbalance >= parseFloat(symbol.bid_imbalance))
 			sendTelegram(`${symbol.ticker}\nImbalance *${data.imbalance}%* 🟢\nBid: ${data.bids}\nAsk: ${data.asks}\nDate: ${data.date}`);
-		else if (data.imbalance >= (parseFloat(symbol.bid_imbalance) - (parseFloat(symbol.bid_imbalance) * 0.3)))
-			sendTelegram(`${symbol.ticker}\nImbalance *${data.imbalance}%* 🔵\nBid: ${data.bids}\nAsk: ${data.asks}\nDate: ${data.date}`);
+		// else if (data.imbalance >= (parseFloat(symbol.bid_imbalance) - (parseFloat(symbol.bid_imbalance) * 0.3)))
+		// 	sendTelegram(`${symbol.ticker}\nImbalance *${data.imbalance}%* 🔵\nBid: ${data.bids}\nAsk: ${data.asks}\nDate: ${data.date}`);
 	}
 	else if (data.imbalance <= 0) {
 		if (Math.abs(data.imbalance) >= parseFloat(symbol.ask_imbalance))
 			sendTelegram(`${symbol.ticker}\nImbalance *${data.imbalance}%* 🔴\nBid: ${data.bids}\nAsk: ${data.asks}\nDate: ${data.date}`);
-		else if (Math.abs(data.imbalance) >= (parseFloat(symbol.ask_imbalance) - (parseFloat(symbol.ask_imbalance) * 0.3)))
-			sendTelegram(`${symbol.ticker}\nImbalance *${data.imbalance}%* 🟠\nBid: ${data.bids}\nAsk: ${data.asks}\nDate: ${data.date}`);
+		// else if (Math.abs(data.imbalance) >= (parseFloat(symbol.ask_imbalance) - (parseFloat(symbol.ask_imbalance) * 0.3)))
+		// 	sendTelegram(`${symbol.ticker}\nImbalance *${data.imbalance}%* 🟠\nBid: ${data.bids}\nAsk: ${data.asks}\nDate: ${data.date}`);
 	}
 	return [];
 }
